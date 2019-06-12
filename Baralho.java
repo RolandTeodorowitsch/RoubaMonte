@@ -5,7 +5,7 @@ import java.util.Random;
  * (montes ou pilhas) de um jogo de cartas.
  *
  * @author Roland Teodorowitsch
- * @version 7 jun. 2019
+ * @version 12 jun. 2019
  */
 public class Baralho {
     
@@ -169,6 +169,17 @@ public class Baralho {
         if (numCartas <= 0)
             return null;
         return baralho[numCartas-1];
+    }
+    
+    /**
+     * Retorna a carta da posi&ccedil;&atilde;o especificada do baralho, sem remov&ecirc;-la do baralho.
+     * @param indCarta &Iacute;ndice da carta do baralho que deve ser retornada.
+     * @return Carta da posi&ccedil;&atilde;o especificada do baralho, ou <code>null</code> em caso de erro.
+     */
+    public Carta posicao(int indCarta) {
+        if (indCarta < 0 || indCarta >= numCartas)
+            return null;
+        return baralho[indCarta];
     }
     
     /**
