@@ -2,48 +2,21 @@ import java.util.Scanner;
 
 public class RoubaMonte {
     
-    static Baralho compras;
-    static Baralho mesa;
-    static String[] nomeJogador;
-    static Baralho[] maoJogador;
-    static Baralho[] monteJogador;
-    static int numJogadores;
-
-    public static void mostraMesa(int jogadorDaVez) {
-        System.out.printf("Compras (%d): ...\n",compras.obtemNumCartas());
-        System.out.printf("Mesa (%d): %s\n",
-                           mesa.obtemNumCartas(),
-                           mesa.toString() );
-        for (int i=0;i<numJogadores;++i) {
-            System.out.printf("Jogador %d:\n",i);
-            if (i == jogadorDaVez)
-                System.out.printf("- Mao (%d): %s\n",maoJogador[i].obtemNumCartas(),maoJogador[i].toString() );
-            else
-                System.out.printf("- Mao (%d): ...\n",maoJogador[i].obtemNumCartas() );
-            System.out.printf("- Monte (%d): %s\n",monteJogador[i].obtemNumCartas(),monteJogador[i].toString() );
-        }
-    }
+    private Baralho compras;
+    private Baralho mesa;
+    private Baralho[] maoJogador;
+    private Baralho[] monteJogador;
+    private int numJogadores;
     
-    public static void main(String[] args) {
-        int jogadorDaVez;
+    public RoubaMonte(int nJ) {
         Carta c;
-        Scanner in = new Scanner(System.in);
-        System.out.print("Numero de jogadores: ");
-        numJogadores = in.nextInt();
-        if (numJogadores<2 || numJogadores>4) {
-            System.err.println("Numero invalido de jogadores...");
-            System.exit(1);
-        }
-        nomeJogador = new String[numJogadores];
+        numJogadores = nJ;
+        compras = new Baralho(false);
+        mesa = new Baralho();
         maoJogador = new Baralho[numJogadores];
         monteJogador = new Baralho[numJogadores];
-        
-        compras = new Baralho(false);
         compras.embaralha();
-        mesa = new Baralho();
         for (int i=0;i<numJogadores;++i) {
-            System.out.printf("Nome do jogador 1: ");
-            nomeJogador[i] = in.next();
             maoJogador[i] = new Baralho();
             monteJogador[i] = new Baralho();
         }
@@ -61,6 +34,33 @@ public class RoubaMonte {
                 maoJogador[j].insere(c);
             }
         }
+    }
+
+    private void mostraMesa(int jogadorDaVez) {
+        System.out.printf("Compras (%d): %s\n",compras.obtemNumCartas(),compras.topo().toString());
+        System.out.printf("Mesa (%d): %s\n",
+                           mesa.obtemNumCartas(),
+                           mesa.toString() );
+        for (int i=0;i<numJogadores;++i) {
+            System.out.printf("Jogador %d:\n",i);
+            if (i == jogadorDaVez)
+                System.out.printf("- Mao (%d): %s\n",maoJogador[i].obtemNumCartas(),maoJogador[i].toString() );
+            else
+                System.out.printf("- Mao (%d): ...\n",maoJogador[i].obtemNumCartas() );
+            int nc = monteJogador[i].obtemNumCartas();
+            System.out.printf("- Monte (%d): ",nc);
+            if ( nc == 0 )
+               System.out.println("-");
+            else
+               System.out.printf("%s\n",monteJogador[i].topo().toString());
+        }
+    }
+    
+    public void jogar() {
+        int jogadorDaVez;
+        Carta c;
+        Scanner in = new Scanner(System.in);
+
 
         jogadorDaVez = 0;
         mostraMesa(jogadorDaVez);

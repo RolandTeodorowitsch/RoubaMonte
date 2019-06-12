@@ -17,6 +17,9 @@ compile:
 run:		compile
 		@java RoubaMonte
 
+javadoc:
+		@javadoc *.java
+
 init:
 		@git init
 		@ssh-keygen -t rsa -C "Roland Teodorowitsch"
@@ -29,4 +32,4 @@ commit:		add
 		@git push -u origin master
 
 clean:
-		@rm -f *.class
+		@rm -f *.class *.ctxt

@@ -119,6 +119,9 @@ public class Baralho {
         return res;
     }
     
+    /**
+     * Embaralha as cartas.
+     */
     public void embaralha() {
         Random r = new Random();
         for (int i=0;i<numCartas;++i) {
@@ -136,6 +139,10 @@ public class Baralho {
         }
     }
     
+    /**
+     * Insere uma carta no topo (ou seja, no final) do baralho.
+     * @param c Carta a ser inserida no baralho.
+     */
     public void insere(Carta c) {
         if (numCartas < baralho.length) {
             baralho[numCartas] = c;
@@ -143,6 +150,10 @@ public class Baralho {
         }
     }
     
+    /**
+     * Remove a carta do topo (ou seja, do final) do baralho.
+     * @return Carta removida do topo (ou seja, do final) do baralho, ou <code>null</code> em caso de erro.
+     */
     public Carta remove() {
         if (numCartas <= 0)
             return null;
@@ -150,6 +161,21 @@ public class Baralho {
         return baralho[numCartas];
     }
     
+    /**
+     * Retorna a carta do topo (ou seja, do final) do baralho, sem remov&ecirc;-la do baralho.
+     * @return Carta do topo (ou seja, do final) do baralho, ou <code>null</code> em caso de erro.
+     */
+    public Carta topo() {
+        if (numCartas <= 0)
+            return null;
+        return baralho[numCartas-1];
+    }
+    
+    /**
+     * Remove uma carta de uma posi&ccedil;&atilde;o espec&iacute;fica do baralho.
+     * @param indCarta &Iacute;ndice da carta que deve ser removida do baralho e que ser&aacute; retornada.
+     * @return Carta removida de uma posi&ccedil;&atilde;o espec&iacute;fica do baralho, ou <code>null</code> em caso de erro.
+     */
     public Carta remove(int indCarta) {
         if (indCarta < 0 || indCarta >= numCartas)
             return null;
