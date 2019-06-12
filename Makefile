@@ -3,6 +3,7 @@ FILES=	README.md\
 	package.bluej\
 	package-list\
 	Makefile\
+	Main.java\
 	Baralho.java\
 	Carta.java\
 	Figura.java\
