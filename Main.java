@@ -7,7 +7,14 @@
 public class Main {
     
     public static void main(String[] args) {
-        RoubaMonte roubamonte = new RoubaMonte(2);
+        
+        Jogador[] jogadores = {
+            new Jogador("PROFESSOR",TipoJogador.USUARIO),
+            new Jogador("COMPUTADOR",TipoJogador.COMPUTADOR),
+            new Jogador("ALUNO",TipoJogador.USUARIO)
+        };
+        
+        RoubaMonte roubamonte = new RoubaMonte(jogadores);
         roubamonte.jogar();
     }
     
