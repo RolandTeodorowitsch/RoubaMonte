@@ -5,6 +5,8 @@ FILES=	README.md\
 	Makefile\
 	Main.java\
 	Baralho.java\
+	Jogador.java\
+	TipoJogador.java\
 	Carta.java\
 	Figura.java\
 	Naipe.java\
