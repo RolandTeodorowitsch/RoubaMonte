@@ -8,7 +8,6 @@
 public class Carta {
     private final Naipe naipe;
     private final Figura figura;
-    private boolean visivel;
     private int valor;
 
     /**
@@ -21,10 +20,9 @@ public class Carta {
      * @param vl Valor (n&uacute;mero de pontos) da carta, geralmente usada
      * para c&aacute;culo de pontua&ccedil;&atilde;o no jogo de cartas.
      */
-    public Carta(Figura f, Naipe n, boolean v, int vl) {
+    public Carta(Figura f, Naipe n, int vl) {
         figura = f;
         naipe = n;
-        visivel = v;
         valor = vl;
     }
   
@@ -36,7 +34,6 @@ public class Carta {
     public Carta(Figura f, Naipe n) {
         figura = f;
         naipe = n;
-        visivel = false;
         valor = figura.obtemValor();
     }
 
@@ -57,28 +54,11 @@ public class Carta {
     }
     
     /**
-     * M&eacute;todo para verificar se uma carta est&aacute; vis&iacute;vel,
-     * ou seja, virada para cima ou n&atilde;o.
-     * @return <code>true</code> se a carta est&aacute; vis&iacute;vel, ou
-     * <code>false</code> em caso contr&aacute;rio.
-     */
-    public boolean estaVisivel() {
-        return visivel;
-    }
-    
-    /**
      * M&eacute;todo para obter o valor de uma carta.
      * @return N&uacute;mero inteiro correspondente ao valor da carta.
      */
     public int obtemValor() {
         return valor;
-    }
-    
-    /**
-     * Inverte o estado (vis&iacute;vel ou n&atilde;o) de uma carta.
-     */
-    public void vira() {
-        visivel = !visivel;
     }
     
     /**
@@ -96,9 +76,7 @@ public class Carta {
      * &eacute; mostrado.
      */
     public String toString() {
-        if (visivel)
-            return "["+figura.obtemRotulo()+naipe.obtemRotulo()+"]";
-        return "[X]";
+        return "["+figura.obtemRotulo()+naipe.obtemRotulo()+"]";
     }
     
 }

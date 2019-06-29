@@ -36,14 +36,12 @@ public class RoubaMonte {
         // MESA
         for (int i=0;i<8;++i) {
             c = compras.remove();
-            c.vira();
             mesa.insere(c);
         }
         // CARTAS DOS JOGADORES
         for (int i=0;i<4;++i) {
             for (int j=0;j<numJogadores;++j) {
                 c = compras.remove();
-                c.vira();
                 maoJogador[j].insere(c);
             }
         }
@@ -52,10 +50,8 @@ public class RoubaMonte {
     private void repoemCartas(Baralho baralho, int numCartas) {
         for (int i=0;i<numCartas;++i) {
             Carta carta = compras.remove();
-            if (carta != null) {
-                carta.vira();
+            if (carta != null)
                 baralho.insere(carta);
-            }
         }                    
     }
     
@@ -65,7 +61,7 @@ public class RoubaMonte {
         if (numCartasCompras == 0)
             System.out.printf("Compras (0): -\n");
         else
-            System.out.printf("Compras (%d): %s\n",compras.obtemNumCartas(),compras.topo().toString());
+            System.out.printf("Compras (%d): [X]\n",compras.obtemNumCartas());
         System.out.printf("Mesa (%d): %s\n",
                            mesa.obtemNumCartas(),
                            mesa.toString() );
@@ -115,6 +111,7 @@ public class RoubaMonte {
         }
         c = maoJogador[jogador].remove(selecao1);
         monteJogador[jogador].insere(c);
+        repoemCartas(maoJogador[jogador],1);
         return true;
     }
     
