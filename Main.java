@@ -18,14 +18,12 @@ public class Main {
         partida1.jogar();
 
         /* Partida 2: 2 jogadores: usuario x computador */
-        /*
         Jogador[] jogadoresPartida2 = {
             new Jogador("VOCE",TipoJogador.USUARIO),
             new Jogador("COMPUTADOR",TipoJogador.COMPUTADOR),
         };
         RoubaMonte partida2 = new RoubaMonte(jogadoresPartida2);
         partida2.jogar();
-        */
     }
     
 }
