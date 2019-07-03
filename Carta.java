@@ -17,13 +17,13 @@ public class Carta {
      * @param v Valor <code>boolean</code>: <code>true</code> indica que
      * a carta est&aacute; virada para cima; <code>false</code> indica que
      * a carta est&aacute; virada para baixo.
-     * @param vl Valor (n&uacute;mero de pontos) da carta, geralmente usada
+     * @param v Valor (n&uacute;mero de pontos) da carta, geralmente usada
      * para c&aacute;culo de pontua&ccedil;&atilde;o no jogo de cartas.
      */
-    public Carta(Figura f, Naipe n, int vl) {
+    public Carta(Figura f, Naipe n, int v) {
         figura = f;
         naipe = n;
-        valor = vl;
+        valor = v;
     }
   
     /**

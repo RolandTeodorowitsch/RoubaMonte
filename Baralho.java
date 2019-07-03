@@ -5,7 +5,7 @@ import java.util.Random;
  * (montes ou pilhas) de um jogo de cartas.
  *
  * @author Roland Teodorowitsch
- * @version 12 jun. 2019
+ * @version 3 jul. 2019
  */
 public class Baralho {
     
@@ -151,17 +151,6 @@ public class Baralho {
     }
     
     /**
-     * Remove a carta do topo (ou seja, do final) do baralho.
-     * @return Carta removida do topo (ou seja, do final) do baralho, ou <code>null</code> em caso de erro.
-     */
-    public Carta remove() {
-        if (numCartas <= 0)
-            return null;
-        numCartas--;
-        return baralho[numCartas];
-    }
-    
-    /**
      * Retorna a carta do topo (ou seja, do final) do baralho, sem remov&ecirc;-la do baralho.
      * @return Carta do topo (ou seja, do final) do baralho, ou <code>null</code> em caso de erro.
      */
@@ -183,6 +172,17 @@ public class Baralho {
     }
     
     /**
+     * Remove a carta do topo (ou seja, do final) do baralho.
+     * @return Carta removida do topo (ou seja, do final) do baralho, ou <code>null</code> em caso de erro.
+     */
+    public Carta remove() {
+        if (numCartas <= 0)
+            return null;
+        numCartas--;
+        return baralho[numCartas];
+    }
+    
+    /**
      * Remove uma carta de uma posi&ccedil;&atilde;o espec&iacute;fica do baralho.
      * @param indCarta &Iacute;ndice da carta que deve ser removida do baralho e que ser&aacute; retornada.
      * @return Carta removida de uma posi&ccedil;&atilde;o espec&iacute;fica do baralho, ou <code>null</code> em caso de erro.
@@ -195,6 +195,21 @@ public class Baralho {
             baralho[i] = baralho[i+1];
         numCartas--;
         return res;
+    }
+    
+    /**
+     * Transfere determinado n&uacute;mero de cartas de um baralho para o baralho corrente.
+     * @param b Baralho do qual as cartas ser&atilde;o transferidas (compradas).
+     * @param nC N&uacute;mero de cartas que ser&atilde;o transferidas (compradas).
+     */
+    public void compra(Baralho b, int nC) {
+        for (int i=0;i<nC;++i) {
+            Carta carta = b.remove();
+            if (carta != null && numCartas < baralho.length) {
+               baralho[numCartas] = carta;
+               ++numCartas;
+            }
+        }                    
     }
     
 }

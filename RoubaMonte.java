@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 /**
- * Classe para criar e executar jogo de cartas Rouba Monte.
+ * Classe para criar e executar jogos de cartas Rouba Monte.
  * 
  * As regras usadas na implementa&ccedil;&atilde;o s&atilde;o basicamente 
  * 
@@ -16,7 +16,15 @@ public class RoubaMonte {
     private Baralho[] monteJogador;
     private Jogador[] jogadores;
     private int numJogadores;
-    
+
+    /**
+     * Construtor para a classe <code>RoubaMonte</code>.
+     * 
+     * Quando se cria um objeto desta classe, este m&eacute;todo inicializa todas as vari&aacute;veis de
+     * inst&acirc;ncia necess&aacute;rias.
+     * @param jog Vetor de objetos da classe <code>Jogador</code> que jogaram a partida.
+     * @throws IllegalArgumentException &Eacute; lan&ccedil;ada quando o n&uacute;mero de jogadores &eacute; inv&aacute;lido.
+     */
     public RoubaMonte(Jogador[] jog) throws IllegalArgumentException {
         int nJ = jog.length;
         if (nJ < 2 || nJ > 4)
@@ -47,14 +55,10 @@ public class RoubaMonte {
         }
     }
 
-    private void repoemCartas(Baralho baralho, int numCartas) {
-        for (int i=0;i<numCartas;++i) {
-            Carta carta = compras.remove();
-            if (carta != null)
-                baralho.insere(carta);
-        }                    
-    }
-    
+    /**
+     * Mostra a mesa (no terminal) do ponto de vista de determinado jogador.
+     * @param jogadorDaVez Corresponde ao &iacute;ndice do jogador que deve jogar na rodada atual.
+     */
     private void mostraMesa(int jogadorDaVez) {
         System.out.println("========================================================================");
         int numCartasCompras = compras.obtemNumCartas();
@@ -82,8 +86,15 @@ public class RoubaMonte {
         System.out.println("========================================================================");
     }
 
-    private int qualMontePodeSerRoubado(int jogador, int carta) {
-        Carta cartaMao = maoJogador[jogador].posicao(carta);
+    /**
+     * Identifica qual monte de outro jogador pode ser roubado por determinado jogador com determinada carta de sua m&atilde;o.
+     * @param jogador Corresponde ao &iacute;ndice do jogador em quest&atilde;o.
+     * @param c &Iacute;ndice da carta da m&atilde;o do jogador em quest&atilde;o.
+     * @return &Iacute;ndice do primeiro jogador cujo monte pode ser roubado pelo jogador em quest&atilde;o com a carta especificada
+     * ou -1, se n&atilde;o for poss&iacute;vel roubar nenhum monte.
+     */
+    private int qualMontePodeSerRoubado(int jogador, int c) {
+        Carta cartaMao = maoJogador[jogador].posicao(c);
         for (int j=0; j<numJogadores; ++j) {
             if (j != jogador) {
                 Carta cartaMonte = monteJogador[j].topo();
@@ -95,28 +106,43 @@ public class RoubaMonte {
         return -1;
     }
     
-    private boolean roubaMonte(int jogador, int selecao1, int selecao2) {
-        if (selecao1 < 0 || selecao1 >= maoJogador[jogador].obtemNumCartas())
+    /**
+     * Realiza o roubo do monte de um jogador, usando determinada carta de um jogador.
+     * @param jogador Corresponde ao &iacute;ndice do jogador que est&aatuce; tentando roubar um monte.
+     * @param c &Iacute;ndice da carta da m&atilde;o do jogador em quest&atilde;o.
+     * @param m &Iacute;ndice do jogador ou monte que se quer roubar com a carta do jogador em quest&atilde;o.
+     * @return <code>true</code> se estiver tudo certo e o roubo for conclu&iaculte;do com sucesso ou <code>false</code>
+     * se houver algum erro.
+     */
+    private boolean roubaMonte(int jogador, int c, int m) {
+        if (c < 0 || c >= maoJogador[jogador].obtemNumCartas())
             return false;
-        if (selecao2 < 0 || selecao2 >= numJogadores || jogador == selecao2)
+        if (m < 0 || m >= numJogadores || jogador == m)
             return false;
-        Carta cartaMao = maoJogador[jogador].posicao(selecao1);
-        Carta cartaMonte = monteJogador[selecao2].topo();
+        Carta cartaMao = maoJogador[jogador].posicao(c);
+        Carta cartaMonte = monteJogador[m].topo();
         if (cartaMao==null || cartaMonte==null || cartaMao.obtemFigura()!=cartaMonte.obtemFigura())
             return false;
-        Carta c;
-        while (monteJogador[selecao2].obtemNumCartas()>0) {
-            c = monteJogador[selecao2].remove(0);
-            monteJogador[jogador].insere(c);
+        Carta carta;
+        while (monteJogador[m].obtemNumCartas()>0) {
+            carta = monteJogador[m].remove(0);
+            monteJogador[jogador].insere(carta);
         }
-        c = maoJogador[jogador].remove(selecao1);
-        monteJogador[jogador].insere(c);
-        repoemCartas(maoJogador[jogador],1);
+        carta = maoJogador[jogador].remove(c);
+        monteJogador[jogador].insere(carta);
+        maoJogador[jogador].compra(compras,1);
         return true;
     }
     
-    private int qualCartaMesaPodeSerRoubada(int jogador, int carta) {
-        Carta cartaMao = maoJogador[jogador].posicao(carta);
+    /**
+     * Identifica qual carta da mesa pode ser roubada por determinado jogador com determinada carta de sua m&atilde;o.
+     * @param jogador Corresponde ao &iacute;ndice do jogador em quest&atilde;o.
+     * @param c &Iacute;ndice da carta da m&atilde;o do jogador em quest&atilde;o.
+     * @return &Iacute;ndice da carta da mesa que pode ser roubada pelo jogador em quest&atilde;o com a carta especificada
+     * ou -1, se n&atilde;o for poss&iacute;vel roubar nenhuma carta.
+     */
+    private int qualCartaMesaPodeSerRoubada(int jogador, int c) {
+        Carta cartaMao = maoJogador[jogador].posicao(c);
         for (int i=0; i<mesa.obtemNumCartas(); ++i) {
             Carta cartaMesa = mesa.posicao(i);
             if (cartaMao!=null && cartaMesa!=null &&
@@ -126,35 +152,59 @@ public class RoubaMonte {
         return -1;
     }
     
-    private boolean roubaMesa(int jogador, int selecao1, int selecao2) {
-        if (selecao1 < 0 || selecao1 >= maoJogador[jogador].obtemNumCartas())
+    /**
+     * Realiza o roubo de uma carta da mesa, usando determinada carta de um jogador.
+     * @param jogador Corresponde ao &iacute;ndice do jogador que est&aatuce; tentando roubar uma carta da mesa.
+     * @param c &Iacute;ndice da carta da m&atilde;o do jogador em quest&atilde;o.
+     * @param cMesa &Iacute;ndice da carta da mesa que se quer roubar com a carta do jogador em quest&atilde;o.
+     * @return <code>true</code> se estiver tudo certo e o roubo for conclu&iaculte;do com sucesso ou <code>false</code>
+     * se houver algum erro.
+     */
+    private boolean roubaMesa(int jogador, int c, int cMesa) {
+        if (c < 0 || c >= maoJogador[jogador].obtemNumCartas())
             return false;
-        if (selecao2 < 0 || selecao2 >= mesa.obtemNumCartas())
+        if (cMesa < 0 || cMesa >= mesa.obtemNumCartas())
             return false;
-        Carta cartaMao = maoJogador[jogador].posicao(selecao1);
-        Carta cartaMesa = mesa.posicao(selecao2);
+        Carta cartaMao = maoJogador[jogador].posicao(c);
+        Carta cartaMesa = mesa.posicao(cMesa);
         if (cartaMao==null || cartaMesa==null || cartaMao.obtemFigura()!=cartaMesa.obtemFigura())
             return false;
-        Carta carta = maoJogador[jogador].remove(selecao1);
+        Carta carta = maoJogador[jogador].remove(c);
         monteJogador[jogador].insere(carta);
-        carta = mesa.remove(selecao2);
+        carta = mesa.remove(cMesa);
         monteJogador[jogador].insere(carta);
-        repoemCartas(maoJogador[jogador],1);
+        maoJogador[jogador].compra(compras,1);
         int numCartasMesa = mesa.obtemNumCartas();
         if (numCartasMesa < 8)
-            repoemCartas(mesa,8-numCartasMesa);
+            mesa.compra(compras,8-numCartasMesa);
         return true;
     }
     
-    private boolean descarta(int jogador, int selecao) {
-        if (selecao < 0 || selecao >= maoJogador[jogador].obtemNumCartas())
+    /**
+     * Realiza o descarte (na mesa) da carta da m&atilde;o de um jogador.
+     * @param jogador Corresponde ao &iacute;ndice do jogador que est&aatuce; realizando o descarte.
+     * @param c &Iacute;ndice da carta da m&atilde;o do jogador em quest&atilde;o que se quer descartar.
+     * @return <code>true</code> se estiver tudo certo e o roubo for conclu&iaculte;do com sucesso ou <code>false</code>
+     * se houver algum erro.
+     */
+    private boolean descarta(int jogador, int c) {
+        if (c < 0 || c >= maoJogador[jogador].obtemNumCartas())
             return false;
-        Carta carta = maoJogador[jogador].remove(selecao);
+        Carta carta = maoJogador[jogador].remove(c);
         mesa.insere(carta);
-        repoemCartas(maoJogador[jogador],1);
+        maoJogador[jogador].compra(compras,1);
         return true;
     }
 
+    /**
+     * Realiza a jogada automatizada para determinado jogador, que sempre ser&aacute; do tipo <code>TipoJogador.COMPUTADOR</code>.
+     * Aqui usa-se uma l&oacute;gica relativamente simples: tentar roubar um monte; n&atilde;o sendo poss&iacutel;vel, tenta-se
+     * roubar uma carta da mesa; n&atilde;o sendo poss&iacute;vel, descarta-se uma carta da m&atilde;o.
+     * @param jogador Corresponde ao &iacute;ndice do jogador que deve jogar.
+     * @return <code>true</code> se estiver tudo certo e a jogada tiver sido conclu&iaculte;da com sucesso ou <code>false</code>
+     * se houver algum erro. A princ&iacute;pio este m&eacute;todo sempre retornar&aacute; <code>true</code>, pois o "computador"
+     * n&atilde;o tentar&aacute; executar jogadas inv&aacute;lidas.
+     */
     private boolean jogadaAutomatica(int jogadorDaVez) {
         // Avalia cartas do Jogador:
         // (1) para roubar monte...
@@ -187,6 +237,16 @@ public class RoubaMonte {
         return descarta(jogadorDaVez,0);
     }
     
+    /**
+     * Realiza uma jogada para determinado jogador, que sempre ser&aacute; do tipo <code>TipoJogador.USUARIO</code>, usando determinado
+     * dispositivo de entrada.
+     * Neste m&eacute;todo apresenta-se um menu que mostra apenas op&ccedil;&otilde;es que realmente podem ser selecionadas pelo
+     * usu&aacute;rio, considerando-se as regras do jogo Rouba Monte.
+     * @param jogador Corresponde ao &iacute;ndice do jogador que deve jogar.
+     * @param in Dispositivo a partir do qual a entrada deve ser lida (tipo <code>Scanner</code>).
+     * @return <code>true</code> se tiver conseguido realizar uma jogada v&aacute;lida ou <code>false</code> caso o jogador
+     * tenha selecionado a op&ccedil;&atilde;o para encerrar o jogo.
+     */
     private boolean jogadaManual(int jogadorDaVez, Scanner in) {
         // Avalia cartas do Jogador:
         // (1) para roubar monte...
@@ -278,6 +338,11 @@ public class RoubaMonte {
         return true;
     }
     
+    /**
+     * Desenvolve o jogo entre os jogadores especificados no construtor.
+     * Este m&eacute;todo ser&aacute; encerrado quando a partida tiver terminado ou quando um jogador tiver selecionado
+     * a op&ccedil;&atilde;o para encerrar o jogo.
+     */
     public void jogar() {
         Scanner in = new Scanner(System.in);
         int jogadorDaVez = 0;

@@ -1,5 +1,5 @@
 /**
- * Enumeracao para os naipes de uma carta de baralho.
+ * Enumera&ccedil;&atilde;o para os naipes de uma carta de baralho.
  * 
  * @author Roland Teodorowitsch
  * @version 5 jun. 2019

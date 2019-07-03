@@ -6,6 +6,10 @@
  */
 public class Main {
     
+    /**
+     * M&eacute;todo principal, que define os jogadores para duas partidas, iniciando-as.
+     * @param args Argumentos da linha de comandos (n&atilde;o s&atilde;o utilizados).
+     */
     public static void main(String[] args) {
         /* Partida 1: 4 jogadores autonomos */
         Jogador[] jogadoresPartida1 = {
