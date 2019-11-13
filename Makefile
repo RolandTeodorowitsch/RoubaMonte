@@ -1,15 +1,15 @@
-FILES=	README.md\
-	README.TXT\
-	package.bluej\
-	package-list\
-	Makefile\
-	Main.java\
-	Baralho.java\
-	Jogador.java\
-	TipoJogador.java\
-	Carta.java\
-	Figura.java\
-	Naipe.java\
+FILES=	README.md \
+	README.TXT \
+	package.bluej \
+	package-list \
+	Makefile \
+	Main.java \
+	Baralho.java \
+	Jogador.java \
+	TipoJogador.java \
+	Carta.java \
+	Figura.java \
+	Naipe.java \
 	RoubaMonte.java
 
 all:		run
